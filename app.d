@@ -32,19 +32,6 @@ void run(O)(auto ref O output) {
     write(okPackages);
 }
 
-
-auto parallelMap(alias F, R)(R range) {
-    import std.parallelism: TaskPool;
-
-    auto taskPool = new TaskPool;
-    auto ret = taskPool
-        .amap!F(range);
-
-    taskPool.finish(/*blocking=*/false);
-
-    return ret;
-}
-
 auto getPackages() {
     import std.net.curl: get;
     import std.json: parseJSON;
@@ -56,6 +43,18 @@ auto getPackages() {
         .array // the JSONValue one, not std.array.array
         .map!(a => a.str)
         ;
+}
+
+auto parallelMap(alias F, R)(R range) {
+    import std.parallelism: TaskPool;
+
+    auto taskPool = new TaskPool;
+    auto ret = taskPool
+        .amap!F(range);
+
+    taskPool.finish(/*blocking=*/false);
+
+    return ret;
 }
 
 string builds(in string dubPackage) {
