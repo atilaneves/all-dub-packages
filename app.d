@@ -1,28 +1,48 @@
 private:
 
 
-public void main() {
-    import std.stdio: writeln, File;
-    import std.parallelism: TaskPool;
+public int main() {
+    import std.stdio: stdout, stderr;
+    try {
+        run(stdout);
+        return 0;
+    } catch(Exception e) {
+        stderr.writeln("Error: ", e.msg);
+        return 1;
+    }
+}
+
+void run(O)(auto ref O output) {
     import std.datetime.stopwatch: StopWatch, AutoStart;
     import std.algorithm: filter;
-    import std.range: take, walkLength;
+    import std.range: walkLength;
+
+    output.writeln("Checking packages...\n");
+    auto sw = StopWatch(AutoStart.yes);
+
+    auto packages = getPackages;
+    auto okPackages = packages
+        .save
+        .parallelMap!builds
+        .filter!(x => x != "");
+
+    output.writeln("\n\nChecked ", packages.length, " packages in ", sw.peek);
+    output.writeln(okPackages.save.walkLength, " packages still build.\n\n");
+
+    write(okPackages);
+}
+
+
+auto parallelMap(alias F, R)(R range) {
+    import std.parallelism: TaskPool;
 
     auto taskPool = new TaskPool;
-    auto sw = StopWatch(AutoStart.yes);
-    writeln("Checking packages...\n");
-    auto packages = getPackages;
-    auto okPackages = taskPool
-        .amap!builds(packages.save)
-        .filter!(x => x != "");
-    taskPool.finish(/*blocking=*/false);
-    writeln("\n\nChecked ", packages.length, " packages in ", sw.peek);
-    writeln(okPackages.save.walkLength, " packages still build.\n\n");
+    auto ret = taskPool
+        .amap!F(range);
 
-    auto file = File("packages.txt", "w");
-    foreach(pkg; okPackages) {
-        file.writeln(pkg);
-    }
+    taskPool.finish(/*blocking=*/false);
+
+    return ret;
 }
 
 auto getPackages() {
@@ -36,7 +56,6 @@ auto getPackages() {
         .array // the JSONValue one, not std.array.array
         .map!(a => a.str)
         ;
-
 }
 
 string builds(in string dubPackage) {
@@ -47,4 +66,15 @@ string builds(in string dubPackage) {
     return ret.status == 0
         ? dubPackage
         : "";
+}
+
+void write(R)(R okPackages) {
+    import std.stdio: File;
+    import std.array: array;
+    import std.algorithm: sort;
+
+    auto file = File("packages.txt", "w");
+    foreach(pkg; sort(okPackages.array)) {
+        file.writeln(pkg);
+    }
 }
