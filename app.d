@@ -26,6 +26,16 @@ void run(O)(auto ref O output) {
     check!tests(output, packages, "dub-test.txt");
 }
 
+auto getPackages() {
+    import std.stdio: File;
+    import std.algorithm: map;
+
+    return File("packages.txt")
+        .byLine
+        .map!(l => l.idup)
+        ;
+}
+
 void check(alias F, O)(auto ref O output, in string[] dubPackages, in string outputFileName) {
     import std.datetime.stopwatch: StopWatch, AutoStart;
     import std.array: array;
@@ -46,20 +56,6 @@ void check(alias F, O)(auto ref O output, in string[] dubPackages, in string out
 
 }
 
-auto getPackages() {
-    import std.net.curl: get;
-    import std.json: parseJSON;
-    import std.algorithm: map;
-
-    import std.range;
-    return "https://code.dlang.org/packages/index.json"
-        .get
-        .parseJSON
-        .array // the JSONValue one, not std.array.array
-        .map!(a => a.str)
-        .take(250);
-        ;
-}
 
 auto parallelMap(alias F, R)(R range) {
     import std.parallelism: TaskPool;
