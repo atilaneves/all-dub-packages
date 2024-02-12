@@ -3,3 +3,8 @@
 *.so
 app
 bin
+*.yaml
+*.png
+tests
+mixins.txt
+master.txt
