@@ -70,11 +70,24 @@ auto parallelMap(alias F, R)(R range) {
 }
 
 string builds(in string dubPackage) {
-    return checkBuild(dubPackage, ["dub", "build", "-y"]);
+    return checkBuild(
+        dubPackage,
+        [
+            "dub",
+            "build",
+            "-y",
+        ]
+    );
 }
 
 string tests(in string dubPackage) {
-    return checkBuild(dubPackage, ["dub", "test"]);
+    return checkBuild(
+        dubPackage,
+        [
+            "dub",
+            "test",
+        ]
+    );
 }
 
 string checkBuild(in string dubPackage, in string[] cmd) {
