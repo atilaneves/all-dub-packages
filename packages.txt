@@ -1267,7 +1267,6 @@ moeimg-d
 mir-optim
 rivald
 htmllog
-d-openai-gym
 deint
 dnumeric
 tsv-utils
@@ -2290,7 +2289,6 @@ dsh
 oceandrift-database
 libasound-d
 eskomcalendar4d
-openai-d
 getopt2
 botty
 bindbc-nethost
@@ -2310,7 +2308,6 @@ potcake
 dgtl
 yslm
 dlibloader
-openai-client
 ninox-d_fs
 deetween
 tiny-svg
