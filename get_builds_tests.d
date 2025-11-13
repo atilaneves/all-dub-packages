@@ -34,7 +34,7 @@ auto getPackages() {
     return File("packages.txt")
         .byLine
         .map!(l => l.idup)
-        .take(5)
+        .take(50)
         .array
         ;
 }
@@ -55,7 +55,7 @@ void check(alias F, O)(auto ref O output, in string[] dubPackages, in string out
 
     output.writeln("\n\nChecked ", dubPackages.length, " packages in ", sw.peek);
     output.writeln("Outputting to ", outputFileName);
-    output.writeln(okPackages.length, " packages still build.\n\n");
+    output.writeln(okPackages.length, " packages passed check `",  __traits(identifier, F), "`");
     write(outputFileName, okPackages);
 }
 
