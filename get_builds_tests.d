@@ -40,7 +40,7 @@ auto getPackages() {
     return File("packages.txt")
         .byLine
         .map!(l => l.idup)
-        .take(250)
+        //.take(250)
         .array
         ;
 }
