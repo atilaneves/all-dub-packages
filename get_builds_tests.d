@@ -78,7 +78,7 @@ auto parallelMap(alias F, R)(R range) {
     auto ret = taskPool
         .amap!F(range);
 
-    taskPool.finish(/*blocking=*/false);
+    taskPool.finish(/*blocking=*/true);
 
     return ret;
 }
