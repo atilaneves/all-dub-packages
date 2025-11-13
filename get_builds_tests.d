@@ -34,7 +34,7 @@ auto getPackages() {
     return File("packages.txt")
         .byLine
         .map!(l => l.idup)
-        .take(50)
+        .take(250)
         .array
         ;
 }
@@ -96,7 +96,9 @@ string tests(in string dubPackage) {
 string checkBuild(in string dubPackage, in string[] cmd) {
     import std.process: execute;
     import std.stdio: writeln;
-    writeln("Checking ", dubPackage);
+    import std.string: join;
+
+    writeln("Checking ", dubPackage, " with `", cmd.join(" "), "`");
     auto ret = execute(cmd ~ dubPackage);
     return ret.status == 0
         ? dubPackage
