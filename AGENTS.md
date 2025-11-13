@@ -5,9 +5,27 @@
 * Use the One True Brace Style.
 * Use UFCS wherever possible.
 * Use localised imports, that is, import inside the function that
-  requires the imports.
+  requires the imports. See examples below.
 * Prefer `const` to `auto`.
 
 # Building
 * Use `ldc2 -O3 get_builds_tests.d -of get_builds_tests` to build
   after any changes have been done.
+
+# Examples of what to do
+
+```dlang
+string foo(string input) {
+    import std.string: replace;
+    return input.replace("foo", "bar");
+}
+```
+
+# Examples of what not to do
+
+```dlang
+import std.string;
+string foo(string input) {
+    return input.replace("foo", "bar");
+}
+```
