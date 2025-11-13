@@ -8,3 +8,5 @@ bin
 tests
 mixins.txt
 master.txt
+get_dub_packages
+get_builds_tests
