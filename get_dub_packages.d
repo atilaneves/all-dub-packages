@@ -1,3 +1,7 @@
+/**
+   This app queries code.dlang.org for the list of all dub packages.
+ */
+
 private:
 
 

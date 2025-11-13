@@ -1,3 +1,8 @@
+/**
+   This app writes out the dub packages that build into dub-build.txt
+   and the ones for which their tests pass into dub-test.txt.
+ */
+
 private:
 
 
@@ -24,10 +29,12 @@ auto getPackages() {
     import std.stdio: File;
     import std.algorithm: map;
     import std.array: array;
+    import std.range: take;
 
     return File("packages.txt")
         .byLine
         .map!(l => l.idup)
+        .take(5)
         .array
         ;
 }
@@ -38,7 +45,7 @@ void check(alias F, O)(auto ref O output, in string[] dubPackages, in string out
     import std.algorithm: filter;
     import std.array: array;
 
-    output.writeln("Checking ", __traits(identifier, F));
+    output.writeln("Checking ", dubPackages.length, " ", __traits(identifier, F));
     auto sw = StopWatch(AutoStart.yes);
 
     auto okPackages = dubPackages
@@ -50,7 +57,6 @@ void check(alias F, O)(auto ref O output, in string[] dubPackages, in string out
     output.writeln("Outputting to ", outputFileName);
     output.writeln(okPackages.length, " packages still build.\n\n");
     write(outputFileName, okPackages);
-
 }
 
 
