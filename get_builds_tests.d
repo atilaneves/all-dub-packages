@@ -25,6 +25,12 @@ void run(O)(auto ref O output) {
     check!tests(output, packages, "dub-test.txt");
 }
 
+struct PackageContext {
+    size_t index;
+    size_t total;
+    string name;
+}
+
 auto getPackages() {
     import std.stdio: File;
     import std.algorithm: map;
@@ -42,13 +48,18 @@ auto getPackages() {
 void check(alias F, O)(auto ref O output, in string[] dubPackages, in string outputFileName) {
     import std.datetime.stopwatch: StopWatch, AutoStart;
     import std.array: array;
-    import std.algorithm: filter;
-    import std.array: array;
+    import std.algorithm: filter, map;
+    import std.range: enumerate;
 
     output.writeln("Checking ", dubPackages.length, " ", __traits(identifier, F));
     auto sw = StopWatch(AutoStart.yes);
 
-    auto okPackages = dubPackages
+    auto packageContexts = dubPackages
+        .enumerate
+        .map!(pkg => PackageContext(pkg.index, dubPackages.length, pkg.value))
+        .array;
+
+    auto okPackages = packageContexts
         .parallelMap!F
         .filter!(x => x != "")
         .array;
@@ -72,9 +83,9 @@ auto parallelMap(alias F, R)(R range) {
     return ret;
 }
 
-string builds(in string dubPackage) {
+string builds(in PackageContext packageContext) {
     return checkBuild(
-        dubPackage,
+        packageContext,
         [
             "dub",
             "build",
@@ -83,9 +94,9 @@ string builds(in string dubPackage) {
     );
 }
 
-string tests(in string dubPackage) {
+string tests(in PackageContext packageContext) {
     return checkBuild(
-        dubPackage,
+        packageContext,
         [
             "dub",
             "test",
@@ -93,15 +104,27 @@ string tests(in string dubPackage) {
     );
 }
 
-string checkBuild(in string dubPackage, in string[] cmd) {
+string checkBuild(in PackageContext packageContext, in string[] cmd) {
     import std.process: execute;
     import std.stdio: writeln;
     import std.string: join;
+    import std.format: format;
+    import std.algorithm: canFind;
 
-    writeln("Checking ", dubPackage, " with `", cmd.join(" "), "`");
-    auto ret = execute(cmd ~ dubPackage);
+    const progress = format("%5d/%5d", packageContext.index + 1, packageContext.total);
+    const cmdString = cmd.join(" ");
+    const type = () {
+        if(cmdString.canFind("build"))
+            return "build";
+        else if (cmdString.canFind("test"))
+            return "test ";
+        else
+            throw new Exception("Unknown cmdString `" ~ cmdString ~ `"`);
+    }();
+    writeln("Checking ", type, " [", progress, "] ", packageContext.name);
+    auto ret = execute(cmd ~ packageContext.name);
     return ret.status == 0
-        ? dubPackage
+        ? packageContext.name
         : "";
 }
 
