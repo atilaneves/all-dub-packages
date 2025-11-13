@@ -12,11 +12,10 @@
   breathe.
 
 # Building
-* Use `ldc2 -O3 get_builds_tests.d -of get_builds_tests` to build
-  after any changes have been done to `get_builds.tests.d`.
-* Use `ldc2 -O3 try_packages.d -of try_packages` to build
-  after any changes have been done to `try_packages.d`.
-
+* Use `ldc2 -O3 get_builds_tests.d` to build after any changes have
+  been made to `get_builds.tests.d`.
+* Use `ldc2 -O3 try_packages.d` to build after any changes have been
+  made to `try_packages.d`.
 
 
 # Examples of what to do
