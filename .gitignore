@@ -32,3 +32,5 @@ unittest.mustache
 test.txt
 *.wsf
 .test.txt
+*.sqlite3
+db
