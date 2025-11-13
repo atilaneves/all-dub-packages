@@ -13,14 +13,8 @@ public int main() {
 }
 
 void run(O)(auto ref O output) {
-    import std.datetime.stopwatch: StopWatch, AutoStart;
-    import std.algorithm: filter;
-    import std.range: walkLength;
-    import std.array: array;
-
-    output.writeln("Checking packages...\n");
-    auto sw = StopWatch(AutoStart.yes);
-    auto packages = getPackages.array;
+    auto packages = getPackages;
+    output.writeln("Checking ", packages.length, " packages...\n");
 
     check!builds(output, packages, "dub-build.txt");
     check!tests(output, packages, "dub-test.txt");
@@ -29,10 +23,12 @@ void run(O)(auto ref O output) {
 auto getPackages() {
     import std.stdio: File;
     import std.algorithm: map;
+    import std.array: array;
 
     return File("packages.txt")
         .byLine
         .map!(l => l.idup)
+        .array
         ;
 }
 
@@ -42,6 +38,7 @@ void check(alias F, O)(auto ref O output, in string[] dubPackages, in string out
     import std.algorithm: filter;
     import std.array: array;
 
+    output.writeln("Checking ", __traits(identifier, F));
     auto sw = StopWatch(AutoStart.yes);
 
     auto okPackages = dubPackages
