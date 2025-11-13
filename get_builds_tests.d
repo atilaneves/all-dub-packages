@@ -5,24 +5,61 @@
 
 private:
 
-
-public int main() {
+public int main(string[] args) {
     import std.stdio: stdout, stderr;
+    import std.getopt: GetOptException;
+
     try {
-        run(stdout);
+        run(stdout, Options(args));
         return 0;
+    } catch(GetOptException e) {
+        stderr.writeln("Error parsing options: ", e.msg);
+        return 1;
     } catch(Exception e) {
         stderr.writeln("Error: ", e.msg);
         return 1;
     }
 }
 
-void run(O)(auto ref O output) {
+struct Options {
+    bool runBuilds;
+    bool runTests;
+
+    this(string[] args) {
+        import std.getopt: getopt, defaultGetoptPrinter;
+        import core.stdc.stdlib: exit;
+
+        bool helpFlag;
+
+        auto result = getopt(
+            args,
+            "builds|b", "Run build checks only (can be combined with --tests)",
+            &runBuilds,
+            "tests|t", "Run test checks only (can be combined with --builds)",
+            &runTests,
+            "help|h", "Show this help message",
+            &helpFlag,
+            );
+
+        if(helpFlag) {
+            defaultGetoptPrinter("Usage: get_builds_tests [OPTIONS]", result.options);
+            exit(0);
+        }
+
+        if(!runBuilds && !runTests)
+            runBuilds = runTests = true;
+    }
+}
+
+void run(O)(auto ref O output, Options options = Options.init) {
     auto packages = getPackages;
     output.writeln("Checking ", packages.length, " packages...\n");
 
-    check!builds(output, packages, "dub-build.txt");
-    check!tests(output, packages, "dub-test.txt");
+    if(options.runBuilds)
+        check!builds(output, packages, "dub-build.txt");
+
+    if(options.runTests)
+        check!tests(output, packages, "dub-test.txt");
 }
 
 struct PackageContext {
