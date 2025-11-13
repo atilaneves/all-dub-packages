@@ -7,6 +7,7 @@ enum Operation { build, test }
 struct Options {
     string packagesFile;
     string[] dmdArgs;
+    string baseDFlags;
     Operation op;
 
     this(string[] rawArgs) {
@@ -28,15 +29,20 @@ struct Options {
             exit(0);
         }
 
-        enforce(args.length > 0, "Expected a path to dub-build.txt or dub-test.txt");
-        packagesFile = args[0];
+        {
+            import std.process : environment;
+            baseDFlags = environment.get("DFLAGS", "");
+        }
+
+        enforce(args.length > 1, "Expected a path to dub-build.txt or dub-test.txt");
+        enforce(args.length == 2, "Expected only one path to dub-build.txt or dub-test.txt");
+        packagesFile = args[1];
         op = determineOperation(packagesFile);
     }
 }
 
 int main(string[] args) {
     import std.stdio : stderr;
-    import std.getopt : GetOptException;
 
     try {
         run(Options(args));
@@ -53,6 +59,7 @@ struct PackageJob {
     string name;
     Operation op;
     string[] dmdArgs;
+    string baseDFlags;
 }
 
 void run(Options options) {
@@ -67,7 +74,8 @@ void run(Options options) {
 
     auto jobs = packages
         .enumerate
-        .map!(pkg => PackageJob(pkg.index, packages.length, pkg.value, options.op, options.dmdArgs))
+        .map!(pkg => PackageJob(pkg.index, packages.length, pkg.value,
+                                 options.op, options.dmdArgs, options.baseDFlags))
         .array;
 
     auto successes = jobs
@@ -90,13 +98,16 @@ string runPackage(PackageJob job) {
         : ["dub", "test"];
 
     auto cmd = baseCmd ~ [job.name];
-    if(job.dmdArgs.length)
-        cmd ~= ["--"] ~ job.dmdArgs;
+    auto dflagsValue = buildDFlags(job.baseDFlags, job.dmdArgs);
 
     writeln("Running [", job.index + 1, "/", job.total, "] ",
             job.name, " with `", cmd.join(" "), "`");
 
-    auto result = execute(cmd);
+    string[string] env;
+    if(dflagsValue.length)
+        env["DFLAGS"] = dflagsValue;
+
+    auto result = env.length ? execute(cmd, env) : execute(cmd);
     if(result.status == 0)
         return job.name;
 
@@ -113,6 +124,19 @@ auto parallelMap(alias F, R)(R range) {
     auto ret = pool.amap!F(range);
     pool.finish(/*blocking=*/true);
     return ret;
+}
+
+string buildDFlags(string baseFlags, string[] extraFlags) {
+    import std.string : join;
+
+    string[] parts;
+    if(baseFlags.length)
+        parts ~= baseFlags;
+    foreach(flag; extraFlags) {
+        if(flag.length)
+            parts ~= flag;
+    }
+    return parts.length ? parts.join(" ") : baseFlags;
 }
 
 

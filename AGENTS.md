@@ -1,3 +1,7 @@
+# General
+Re-read every D (`*.d`) file in the repository that has changed after
+every command. Use git to figure out which ones that is.
+
 # Code Style
 * The `main` function's only job is to call `run` and return a non
   zero code if an Exception was thrown, do not make it do more than
