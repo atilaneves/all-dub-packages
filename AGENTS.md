@@ -7,6 +7,9 @@
 * Use localised imports, that is, import inside the function that
   requires the imports. See examples below.
 * Prefer `const` to `auto`.
+* Prefer to write code that has at most 80 columns, but do not use
+  this number as a hard limit. Sometimes code needs more space to
+  breathe.
 
 # Building
 * Use `ldc2 -O3 get_builds_tests.d -of get_builds_tests` to build
