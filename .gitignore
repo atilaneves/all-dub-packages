@@ -28,3 +28,7 @@ unittest.mustache
 *.wav
 *.lst
 *.port
+*.db
+test.txt
+*.wsf
+.test.txt
