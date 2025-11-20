@@ -136,7 +136,8 @@ string tests(in PackageContext packageContext) {
         packageContext,
         [
             "dub",
-            "test",
+            "build",
+            "-build=unittest",
         ]
     );
 }
