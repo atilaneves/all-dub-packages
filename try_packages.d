@@ -109,7 +109,7 @@ PackageOutcome runPackage(PackageJob job) {
 
     auto baseCmd = job.op == Operation.build
         ? ["dub", "build", "-y"]
-        : ["dub", "test"];
+        : ["dub", "build", "-y", "--build=unittest"];
 
     auto cmd = baseCmd ~ [job.name];
     auto dflagsValue = buildDFlags(job.baseDFlags, job.dmdArgs);
