@@ -129,7 +129,6 @@ pyd
 derelict_extras-opencl
 three-d
 ctini
-mambo
 dstack
 dstep
 jpeg-turbo
@@ -433,7 +432,6 @@ minimized
 fixed
 pathlib
 cobox-wm
-progress-d
 meta
 dests
 desstdx
@@ -1237,7 +1235,6 @@ crypto
 json-patch
 bamboo-d
 dshould
-grain
 terrain-generator-d
 arrogant
 iex
@@ -1821,11 +1818,9 @@ muparser-bindings
 elemi
 bindbc-sfml
 dateformat
-btrfs
 command
 blink1-d
 dstruct-orm
-btdu
 dangel
 piecewise-bezier-surface-generator
 symmetry_thrift_d
@@ -2203,8 +2198,6 @@ mir-excel
 classutil
 rustls
 libpb
-openapi-client
-stripe-client
 betterc-interface
 unbound-control
 builder
@@ -2218,7 +2211,6 @@ oceandrift-validation
 yyd
 enumcons
 virc
-openapi-to-d
 nudsfml
 slf4d
 openssl-static
@@ -2326,8 +2318,6 @@ tailwind-d
 libnotify-d
 doap
 doppler
-easyhttp
-darkersky
 unexpected
 simplesoftmix
 implicit-context
@@ -2377,7 +2367,6 @@ redub
 isla
 cmdex
 sokol-d
-tiny-autodiff
 primesort
 predictivesearch
 readonly_range
@@ -2412,7 +2401,6 @@ dokutoku-temp
 wg-monitor
 rockhopper
 lubeck
-dfl
 sievecache
 iterimg
 sqlite3d
@@ -2615,7 +2603,10 @@ murmurhash-d
 lyla
 trapflow
 plaindom
-progresso
 asfw-dlang
 tendrils
 libalpmd
+simple-image
+simple-video
+ddn
+promise
