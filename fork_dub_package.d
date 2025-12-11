@@ -28,7 +28,7 @@ void run(string[] args) {
     ensureFork(githubUrl, forkOwner, repoName, forkAlreadyExists);
     const destinationRoot = buildPath(getcwd(), "forks");
     mkdirRecurse(destinationRoot);
-    const destination = buildPath(destinationRoot, repoName);
+    const destination = buildPath(destinationRoot, packageName);
     ensureCloned(forkOwner, repoName, destination);
     ensureUpstream(destination, githubUrl);
     writeln("Fork ready at ", destination);
