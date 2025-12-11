@@ -19,7 +19,5 @@ if [[ ! -d "$fork_dir" ]]; then
 fi
 
 export DFLAGS="-preview=dip1000"
-export DUB_CACHE_PATH="$fork_dir/.dub-cache"
-mkdir -p "$DUB_CACHE_PATH"
 
 dub build --root="$fork_dir" --build=unittest
