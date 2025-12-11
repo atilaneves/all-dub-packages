@@ -43,7 +43,7 @@ string foo(string input) {
 
 # Forks
 
-Each directory in `forks` is a fork of a Github project.  The idea is
+Each directory in `forks` is a fork of a Github project. The idea is
 to fix any DIP1000 errors in that project. The way one builds any of
-those projects to see what the DIP1000 errors are is
-`DFLAGS="-preview=dip1000" dub build --build=unittest`.
+those projects to see what the DIP1000 errors are is `./build.sh
+<fork_name>`, e.g. `./build.sh bc-build`.
