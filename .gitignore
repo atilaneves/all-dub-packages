@@ -35,3 +35,5 @@ test.txt
 *.sqlite3
 db
 try_packages
+forks
+fork_dub_package

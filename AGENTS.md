@@ -16,10 +16,11 @@ every command. Use git to figure out which ones that is.
   breathe.
 
 # Building
-* Use `ldc2 -O3 get_builds_tests.d` to build after any changes have
-  been made to `get_builds.tests.d`.
-* Use `ldc2 -O3 try_packages.d` to build after any changes have been
-  made to `try_packages.d`.
+* Do not print "Next step: rebuild with ..." after editing a file.
+  Instead, if you touch it, rebuild it.
+* Use `ldc2 -O3 <file>.d` to build after any changes have been made
+  to `<file>`. For example, `ldc2 -O3 foo.d` after changes
+  to `foo.d`.
 
 
 # Examples of what to do
@@ -39,3 +40,10 @@ string foo(string input) {
     return input.replace("foo", "bar");
 }
 ```
+
+# Forks
+
+Each directory in `forks` is a fork of a Github project.  The idea is
+to fix any DIP1000 errors in that project. The way one builds any of
+those projects to see what the DIP1000 errors are is
+`DFLAGS="-preview=dip1000" dub build --build=unittest`.
