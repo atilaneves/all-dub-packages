@@ -19,5 +19,5 @@ if [[ ! -d "$fork_dir" ]]; then
 fi
 
 export DFLAGS="-preview=dip1000"
-
-dub build --root="$fork_dir" --build=unittest
+cd "$fork_dir"
+dub build --build=unittest
