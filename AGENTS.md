@@ -10,7 +10,7 @@ every command. Use git to figure out which ones that is.
 * Use UFCS wherever possible.
 * Use localised imports, that is, import inside the function that
   requires the imports. See examples below.
-* Prefer `const` to `auto`.
+* Use `const` instead of `auto` whenever/wherever possible.
 * Prefer to write code that has at most 80 columns, but do not use
   this number as a hard limit. Sometimes code needs more space to
   breathe.
