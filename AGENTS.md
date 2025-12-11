@@ -62,6 +62,7 @@ necessary in `forks/<project>` to make the build work. Do NOT edit
 files elsewhere such as dub dependencies.
 
 Do *not* remove `scope` annotations. If anything, you should add them.
+Do *not* add `@trusted` to a function.
 
 After the project successfully compiles, if you edited a function that
 *had* to be `@trusted` before, try and see if it now compiles with
