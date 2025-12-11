@@ -16,6 +16,8 @@ every command. Use git to figure out which ones that is.
   breathe.
 
 # Building
+* This is only valid for `*.d` files at the root of this git
+  repository.
 * Do not print "Next step: rebuild with ..." after editing a file.
   Instead, if you touch it, rebuild it.
 * Use `ldc2 -O3 <file>.d` to build after any changes have been made
@@ -44,6 +46,28 @@ string foo(string input) {
 # Forks
 
 Each directory in `forks` is a fork of a Github project. The idea is
-to fix any DIP1000 errors in that project. The way one builds any of
-those projects to see what the DIP1000 errors are is `./build.sh
-<fork_name>`, e.g. `./build.sh bc-build`.
+to fix any DIP1000 errors in that project. See `dip1000-check` below
+for more details.
+
+# dip1000-check
+
+The task is to check a dub project for compilation failures due to
+DIP1000. Running `./build_fork.sh <project>` forks (if necessary),
+clones (if necessary), and builds a project in `forks/<project>`,
+so running `./build_fork.sh <project>` is the only thing you need
+to do to get going.
+
+Running that is going to result in build failures. Edit files as
+necessary in `forks/<project>` to make the build work. Do NOT edit
+files elsewhere such as dub dependencies.
+
+Do *not* remove `scope` annotations. If anything, you should add them.
+
+After the project successfully compiles, if you edited a function that
+*had* to be `@trusted` before, try and see if it now compiles with
+`@safe`. If it doesn't, revert the changes to what they were when the
+project managed to compile.
+
+Either way, if the project compiles, create a branch called
+`fix-dip1000` and do a git commit with the message "Fix DIP1000
+compilation errors".
