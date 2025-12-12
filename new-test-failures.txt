@@ -1,25 +1,23 @@
-bc-string
-beangle-micdn
-beangle-task
-botty
-bsky
-buildgrid-client
-cfg-lib
-chimpfella
-configy
-cosma
-cushion
-dbmigrations
-dcd
-ddox
-declui
-desktopfile
-dietpc
-dlang-tour
-dlearn
-dscanner
-dsymbol
-dxml
+bc-string # PR
+beangle-micdn # vibe
+beangle-task #vibe
+botty # vibe
+bsky # complicated
+buildgrid-client # script failed (my fault)
+cfg-lib # undead
+chimpfella # PR
+configy # PR
+cushion # std.algorithm.move
+dbmigrations # vibe
+dcd # emsi-containers
+ddox # vibe
+desktopfile # PR
+dietpc # diet-ng
+dlang-tour # failed to fork (script failure)
+dlearn # mir-algorithm
+dscanner # emsi_containers
+dsymbol # emsi_containers
+dxml # complicated
 easysettings
 elembuf
 elemi
